@@ -5,6 +5,7 @@ from collections import abc
 import aufunc as f
 import time
 import copy
+import re
 
 class c1:
     dic = {};
@@ -15,6 +16,12 @@ class c2:
     revid = [];
     page = "";
 
+def ndi(nested):
+    for key, value in nested.items():
+        if isinstance(value, abc.Mapping):
+            yield from ndi(value)
+        else:
+            yield key, value
 site = pywikibot.Site()
 d1 = {}
 d2 = {}
@@ -24,7 +31,7 @@ l2 = []
 ccount = -1;
 lock = {}
 l3 = {}
-rmax = 2 #4
+rmax = 4 #4
 lcount = -1
 ts1 = pywikibot.Timestamp.isoformat(site.server_time())
 time.sleep(3)
@@ -87,7 +94,7 @@ while True:
                             f.alog("ADDLOCK: " + item["title"])
                             lock[item["title"]] = item["timestamp"]
                             rfp = pywikibot.Page(site,u"Wikipedia:请求保护页面")
-                            if(rfp.find(item["title"]) == -1):
+                            if(rfp.text.find(item["title"]) == -1):
                                 pt1 = rfp.text[13:]
                                 pt2 = "\n{{/header}}\n=== " + item["title"] + " ===\n请检查此页面的编辑历史。可能有一名或多名用户在此页面执行了多于3次的回退操作。~~~~\n:: <small>目前保護狀態：{{protection status|" + item["title"] + "}}</small>\n" + pt1
                                 site.editpage(page=rfp,summary="add",notminor=True,text=pt2)
