@@ -1,6 +1,5 @@
 import requests
 import urllib.request
-import re
 
 S = requests.Session()
 
