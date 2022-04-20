@@ -49,29 +49,28 @@ DATA = R.json()
 CSRF_TOKEN = DATA['query']['tokens']['csrftoken']
 
 # Step 4: POST request to edit a page
-
 PARAMS = {
     "action": "query",
-    "format": "json",
-    "prop": "categories",
-    "titles": "" #TITLE
+    "cmtitle": "Category:", #TITLE
+    "cmlimit": "20", #LIMIT
+    "list": "categorymembers",
+    "format": "json"
 }
 
 R = S.get(url=URL, params=PARAMS)
 DATA = R.json()
 
-PAGES = DATA["query"]["pages"]
+PAGES = DATA['query']['categorymembers']
 
-for k, v in PAGES.items():
-    for cat in v['categories']:
-        PARAMS_3 = {
-            'action':"delete",
-            'title':cat["title"],
-            'token':CSRF_TOKEN,
-            'format':"json"
-        }
-        R = S.post(URL, data=PARAMS_3)
-        DATA = R.json()
-        print(DATA)
+for page in PAGES:
+    PARAMS_3 = {
+        'action':"delete",
+        'title':cat["title"],
+        'token':CSRF_TOKEN,
+        'format':"json"
+    }
+    R = S.post(URL, data=PARAMS_3)
+    DATA = R.json()
+    print(DATA)
 #print(html.json())
 #html = html.decode("utf-8")
