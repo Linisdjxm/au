@@ -65,7 +65,7 @@ PAGES = DATA['query']['categorymembers']
 for page in PAGES:
     PARAMS_3 = {
         'action':"delete",
-        'title':cat["title"],
+        'title':page,
         'token':CSRF_TOKEN,
         'format':"json"
     }
